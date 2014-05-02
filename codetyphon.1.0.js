@@ -1,0 +1,111 @@
+/*
+author :codetyphon
+email   :g@codetyphon
+https://github.com/codetyphon/codetyphon
+2014-04-30 beijing
+*/
+function $(id){
+	if(id){
+		return new CodeTyphon(id);
+	}else{
+		//return new CodeTyphonPlus();
+		//return new $();
+	}
+}
+
+
+function CodeTyphon(id){
+	this.id=id;
+	this.obj=document.getElementById(id);
+	return this;
+}
+CodeTyphon.prototype.val=function(val){
+	if(!val){
+		return this.obj.value;
+	}else{
+		this.obj.value=val;
+		return this;
+	}
+}
+CodeTyphon.prototype.text=function(text){
+	if(!text){
+		return this.obj.innerHTML;
+	}else{
+		this.obj.innerHTML=text;
+		return this;
+	}
+}
+CodeTyphon.prototype.style=function(styleName,styleValue){
+	if(!text){
+		return this.obj.style.styleName='styleValue';
+	}else{
+		this.obj.style.styleName;
+		return this;
+	}
+}
+CodeTyphon.prototype.show=function(){
+	this.obj.style.display='block';
+	return this;
+}
+CodeTyphon.prototype.hide=function(){
+	this.obj.style.display='none';
+	return this;
+}
+CodeTyphon.prototype.click=function(fun){
+	/*2014-04-30
+	if(!fun){
+		
+	}else{
+		this.obj.onclick=fun;
+		return this;
+	}*/
+	//2014-05-02
+	this.bind('click',fun);
+	return this;
+}
+CodeTyphon.prototype.keydown=function(fun){
+	this.bind('keydown',fun);
+	return this;
+}
+CodeTyphon.prototype.bind=function(evname,fun){//2014-05-02
+	if(!fun){
+	}else{
+		if(evname=="dragstart"){//16:10
+			this.obj.draggable=true;
+		}
+		this.obj.addEventListener(evname,fun,true);
+		return this;
+	}
+}
+/* plus .. */
+
+$.cort_array=function(array){
+	array=array.sort(function(){
+		return 0.5 > Math.random();
+	});
+	return array;
+}
+$.html_encode=function(str){
+	 var s = "";   
+	  if (str.length == 0) return "";   
+	  s = str.replace(/&/g, "&gt;");   
+	  s = s.replace(/</g, "&lt;");   
+	  s = s.replace(/>/g, "&gt;");   
+	  s = s.replace(/ /g, "&nbsp;");   
+	  s = s.replace(/\'/g, "&#39;");   
+	  s = s.replace(/\"/g, "&quot;");   
+	  s = s.replace(/\n/g, "<br>");   
+	  return s;   
+}
+$.html_decode=function(str){
+	 var s = "";   
+	  if (str.length == 0) return "";   
+	  s = str.replace(/&gt;/g, "&");   
+	  s = s.replace(/&lt;/g, "<");   
+	  s = s.replace(/&gt;/g, ">");   
+	  s = s.replace(/&nbsp;/g, " ");   
+	  s = s.replace(/&#39;/g, "\'");   
+	  s = s.replace(/&quot;/g, "\"");   
+	  s = s.replace(/<br>/g, "\n");   
+	  return s;   
+}
