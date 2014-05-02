@@ -36,10 +36,12 @@ CodeTyphon.prototype.text=function(text){
 	}
 }
 CodeTyphon.prototype.style=function(styleName,styleValue){
-	if(!text){
-		return this.obj.style.styleName='styleValue';
+	if(!styleValue){
+		
+		return this.obj.style.styleName;
 	}else{
-		this.obj.style.styleName;
+		
+		eval("this.obj.style."+styleName+"='"+styleValue+"'");
 		return this;
 	}
 }
@@ -73,7 +75,7 @@ CodeTyphon.prototype.bind=function(evname,fun){//2014-05-02
 		if(evname=="dragstart"){//16:10
 			this.obj.draggable=true;
 		}
-		this.obj.addEventListener(evname,fun,true);
+		this.obj.addEventListener(evname,fun);
 		return this;
 	}
 }
