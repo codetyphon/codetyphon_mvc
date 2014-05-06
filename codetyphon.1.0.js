@@ -35,6 +35,15 @@ CodeTyphon.prototype.text=function(text){
 		return this;
 	}
 }
+CodeTyphon.prototype.append=function(text){//2014-05-05
+	
+	if(!text){
+		return this.obj.innerHTML;
+	}else{
+		this.obj.innerHTML+=text;
+		return this;
+	}
+}
 CodeTyphon.prototype.style=function(styleName,styleValue){
 	if(!styleValue){
 		
@@ -78,6 +87,10 @@ CodeTyphon.prototype.bind=function(evname,fun){//2014-05-02
 		this.obj.addEventListener(evname,fun);
 		return this;
 	}
+}
+CodeTyphon.prototype.focus=function(){
+	this.obj.focus();
+	return this;
 }
 /* plus .. */
 
