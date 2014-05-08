@@ -19,16 +19,18 @@ function CodeTyphon(id){
 	this.obj=document.getElementById(id);
 	return this;
 }
-CodeTyphon.prototype.val=function(val){
-	if(!val){
+CodeTyphon.prototype.val=function(v){
+	//2014-05-08
+	if(v==undefined){
 		return this.obj.value;
-	}else{
-		this.obj.value=val;
+	}
+	else{	
+		this.obj.value=v;
 		return this;
 	}
 }
 CodeTyphon.prototype.text=function(text){
-	if(!text){
+	if(text==undefined){
 		return this.obj.innerHTML;
 	}else{
 		this.obj.innerHTML=text;
@@ -36,8 +38,7 @@ CodeTyphon.prototype.text=function(text){
 	}
 }
 CodeTyphon.prototype.append=function(text){//2014-05-05
-	
-	if(!text){
+	if(text==undefined){
 		return this.obj.innerHTML;
 	}else{
 		this.obj.innerHTML+=text;
