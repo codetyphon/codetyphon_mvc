@@ -53,6 +53,14 @@ CodeTyphon.prototype.href=function(link){//2014-05-11
 		return this;
 	}
 }
+CodeTyphon.prototype.src=function(link){//2014-05-11
+	if(link==undefined){
+		return this.obj.src;
+	}else{
+		this.obj.src=link;
+		return this;
+	}
+}
 CodeTyphon.prototype.style=function(styleName,styleValue){
 	if(!styleValue){
 		
