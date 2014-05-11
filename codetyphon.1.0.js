@@ -45,6 +45,14 @@ CodeTyphon.prototype.append=function(text){//2014-05-05
 		return this;
 	}
 }
+CodeTyphon.prototype.href=function(link){//2014-05-11
+	if(link==undefined){
+		return this.obj.href;
+	}else{
+		this.obj.href=link;
+		return this;
+	}
+}
 CodeTyphon.prototype.style=function(styleName,styleValue){
 	if(!styleValue){
 		
