@@ -12,8 +12,6 @@ function $(id){
 		//return new $();
 	}
 }
-
-
 function CodeTyphon(id){
 	this.id=id;
 	this.obj=document.getElementById(id);
@@ -162,5 +160,10 @@ $.checkTel=function(str){
 		return "手机号码格式不正确！";
 	}else{
 		return true;
+	}
+}
+$.isMob=function(fun){
+	if(navigator.userAgent.indexOf('Mobile')!=-1){
+		fun();
 	}
 }
