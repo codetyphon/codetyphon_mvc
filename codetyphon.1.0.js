@@ -141,3 +141,9 @@ $.html_decode=function(str){
 	  s = s.replace(/<br>/g, "\n");   
 	  return s;   
 }
+$.prototype.saveObj = function(key, obj) {
+	localStorage.setItem(key, JSON.stringify(obj))
+}
+$.prototype.openObj = function(key) {
+    return JSON.parse(localStorage.getItem(key))
+}
