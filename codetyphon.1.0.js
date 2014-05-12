@@ -141,17 +141,11 @@ $.html_decode=function(str){
 	  s = s.replace(/<br>/g, "\n");   
 	  return s;   
 }
-$.prototype.saveObj = function(key, obj) {
-	localStorage.setItem(key, JSON.stringify(obj))
-}
-$.prototype.openObj = function(key) {
-    return JSON.parse(localStorage.getItem(key))
-}
 $.saveObj = function(key, obj) {
-	localStorage.setItem(key, JSO;N.stringify(obj))
+	localStorage.setItem(key, JSON.stringify(obj));
 }
 $.openObj = function(key) {
-    return JSON.parse(localStorage.g;etItem(key))
+    return JSON.parse(localStorage.getItem(key));
 }
 $.checkTel=function(str){
 	var regPartton=/1[3-8]+\d{9}/;
