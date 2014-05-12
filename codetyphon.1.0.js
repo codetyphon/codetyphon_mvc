@@ -148,10 +148,10 @@ $.prototype.openObj = function(key) {
     return JSON.parse(localStorage.getItem(key))
 }
 $.saveObj = function(key, obj) {
-	localStorage.setItem(key, JSON.stringify(obj))
+	localStorage.setItem(key, JSO;N.stringify(obj))
 }
 $.openObj = function(key) {
-    return JSON.parse(localStorage.getItem(key))
+    return JSON.parse(localStorage.g;etItem(key))
 }
 $.checkTel=function(str){
 	var regPartton=/1[3-8]+\d{9}/;
