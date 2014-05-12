@@ -154,3 +154,10 @@ $.isMob=function(fun){
 		fun();
 	}
 }
+$.isMobElse=function(mofun,pcfun){
+	if(navigator.userAgent.indexOf('Mobile')!=-1){
+		mofun();
+	}else{
+		pcfun();
+	}
+}
