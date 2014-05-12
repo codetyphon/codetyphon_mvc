@@ -147,3 +147,9 @@ $.prototype.saveObj = function(key, obj) {
 $.prototype.openObj = function(key) {
     return JSON.parse(localStorage.getItem(key))
 }
+$.saveObj = function(key, obj) {
+	localStorage.setItem(key, JSON.stringify(obj))
+}
+$.openObj = function(key) {
+    return JSON.parse(localStorage.getItem(key))
+}
