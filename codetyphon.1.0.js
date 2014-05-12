@@ -7,9 +7,6 @@ https://github.com/codetyphon/codetyphon
 function $(id){
 	if(id){
 		return new CodeTyphon(id);
-	}else{
-		//return new CodeTyphonPlus();
-		//return new $();
 	}
 }
 function CodeTyphon(id){
@@ -64,7 +61,6 @@ CodeTyphon.prototype.style=function(styleName,styleValue){
 		
 		return this.obj.style.styleName;
 	}else{
-		
 		eval("this.obj.style."+styleName+"='"+styleValue+"'");
 		return this;
 	}
@@ -78,14 +74,6 @@ CodeTyphon.prototype.hide=function(){
 	return this;
 }
 CodeTyphon.prototype.click=function(fun){
-	/*2014-04-30
-	if(!fun){
-		
-	}else{
-		this.obj.onclick=fun;
-		return this;
-	}*/
-	//2014-05-02
 	this.bind('click',fun);
 	return this;
 }
@@ -108,7 +96,6 @@ CodeTyphon.prototype.focus=function(){
 	return this;
 }
 /* plus .. */
-
 $.cort_array=function(array){
 	array=array.sort(function(){
 		return 0.5 > Math.random();
