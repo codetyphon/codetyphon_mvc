@@ -141,11 +141,18 @@ $.html_decode=function(str){
 	  s = s.replace(/<br>/g, "\n");   
 	  return s;   
 }
+//2014-05-12
 $.saveObj = function(key, obj) {
 	localStorage.setItem(key, JSON.stringify(obj));
 }
 $.openObj = function(key) {
     return JSON.parse(localStorage.getItem(key));
+}
+$.delObj = function(key) {
+    localStorage.removeItem(key);
+}
+$.clearObj = function() {
+    localStorage.clear();
 }
 $.checkTel=function(str){
 	var regPartton=/1[3-8]+\d{9}/;
