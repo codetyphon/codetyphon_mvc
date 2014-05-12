@@ -153,3 +153,13 @@ $.saveObj = function(key, obj) {
 $.openObj = function(key) {
     return JSON.parse(localStorage.getItem(key))
 }
+$.checkTel=function(str){
+	var regPartton=/1[3-8]+\d{9}/;
+	if(!str || str==null){
+		return "手机号码不能为空！";
+	}else if(!regPartton.test(str)){
+		return "手机号码格式不正确！";
+	}else{
+		return true;
+	}
+}
