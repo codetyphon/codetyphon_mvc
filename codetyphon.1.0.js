@@ -161,3 +161,14 @@ $.isMobElse=function(mofun,pcfun){
 		pcfun();
 	}
 }
+//2014-05-18
+$.json=function(url,callback){
+	var s=document.createElement("script");
+	s.src=url+callback;
+	document.getElementsByTagName("body").item(0).appendChild(s);
+}
+/*
+$.json("http://haskellchina.jd-app.com/tops/3/",function(x){
+	listop(x);
+});
+*/
