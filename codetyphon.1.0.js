@@ -172,3 +172,18 @@ $.json("http://haskellchina.jd-app.com/tops/3/",function(x){
 	listop(x);
 });
 */
+//2014-05-19
+$.setResizeBackGround=function(src){
+	var img=document.createElement('img');
+	img.id="resizebackgroundimg";
+	img.style.position='fixed';
+	document.getElementsByTagName("body").item(0).appendChild(s);
+	window.onresize=function(){
+		var bw=document.documentElement.clientWidth;
+		var bh=document.documentElement.clientHeight;
+		document.getElementById("resizebackgroundimg").style.left='0px';
+		document.getElementById("resizebackgroundimg").style.top='0px';
+		document.getElementById("resizebackgroundimg").width=parseInt(bw);
+		document.getElementById("resizebackgroundimg").height=parseInt(bh);
+	}
+}
