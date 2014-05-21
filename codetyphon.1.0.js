@@ -197,3 +197,7 @@ $.float2int=function(float){
 	return (float)|0;
 	//return ~~ (float);
 }
+$.ab2ba=function(a,b){
+	a=[b,b=a][0];
+	return [a,b];
+}
