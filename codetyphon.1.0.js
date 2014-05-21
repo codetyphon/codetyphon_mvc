@@ -193,3 +193,7 @@ $.randomStr=function(len){
 	for (; rdmString.length < len; rdmString += Math.random().toString(36).substr(2));
 	return rdmString.substr(0, len);
 }
+$.float2int=function(float){
+	return (float)|0;
+	//return ~~ (float);
+}
