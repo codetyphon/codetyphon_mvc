@@ -201,3 +201,10 @@ $.ab2ba=function(a,b){
 	a=[b,b=a][0];
 	return [a,b];
 }
+$.query=function (name){
+     var result = location.search.match(new RegExp("[\?\&]" + name+ "=([^\&]+)","i"));
+     if(result == null || result.length < 1){
+         return "";
+     }
+     return result[1];
+}
