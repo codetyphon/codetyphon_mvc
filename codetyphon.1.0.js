@@ -149,6 +149,10 @@ $.checkTel=function(str){
 		return true;
 	}
 }
+$.isEmail=function(str){
+       var reg = /^(\w)+(\.\w+)*@(\w)+((\.\w{2,3}){1,3})$/;
+       return reg.test(str);
+}
 $.isMob=function(fun){
 	if(navigator.userAgent.indexOf('Mobile')!=-1){
 		fun();
