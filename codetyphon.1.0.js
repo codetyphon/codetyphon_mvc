@@ -166,15 +166,13 @@ $.isMobElse=function(mofun,pcfun){
 	}
 }
 //2014-05-18
-$.json=function(url,callback){
+$.jsonp=function(url,callbackname){
 	var s=document.createElement("script");
-	s.src=url+callback;
+	s.src=url+callbackname;
 	document.getElementsByTagName("body").item(0).appendChild(s);
 }
 /*
-$.json("http://haskellchina.jd-app.com/tops/3/",function(x){
-	listop(x);
-});
+$.jsonp("http://haskellchina.jd-app.com/tops/3/","listop");
 */
 //2014-05-19
 $.setResizeBackGround=function(src){
