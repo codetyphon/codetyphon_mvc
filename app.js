@@ -35,6 +35,9 @@ http.createServer(function (req, res) {
 	  	case '/about':
 	  		name='view/about.html';
 	  		break;
+	  	case '/blogs':
+	  		name='view/blogs.html';
+	  		break;
 	  	/* router end */
 	  	default:
 	  		var acts=pathname.split('/');
