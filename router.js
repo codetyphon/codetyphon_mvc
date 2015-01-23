@@ -1,23 +1,42 @@
-function Rout(pathname,x){
-	console.log("!"+pathname)
+function Rout(pathname,act,res){
+	/*
+	var jsstr="";
+	try{
+		jsstr = fs.readFileSync("./router.json");
+		var cmd="switch('"+pathname+"'){";
+		var routers=eval(jsstr.toString());
+		for (var i =0;i< routers.length - 1;i++) {
+			cmd+="case '"+routers[i][0]+"':name='view/"+routers[i][1]+".html';break;";
+		};
+		cmd+="default:x()}";
+		eval(cmd);
+	}catch(err){
+		//console.log(err);
+	}
+	console.log(cmd)
+	/**/
 	switch(pathname){
-		/* router begin u can code here*/
+
 		case '/':
-	  		name='view/index.html';
+	  		name='index';
+	  		act();
 	  		break;
   		case '/index':
-	  		name='view/index.html';
+	  		name='index';
+	  		act();
 	  		break;
 	  	case '/about':
-	  		name='view/about.html';
+	  		name='about';
+	  		act();
 	  		break;
 	  	case '/blogs':
-	  		name='view/blogs.html';
+	  		name='blogs';
+	  		act();
 	  		break;
-	  	/* router end */
 	  	default:
-	  		x();
+	  		res();
 	}
-	console.log("!name"+name)
+	//console.log("!name"+name)
 }
+
 exports.rout=Rout;

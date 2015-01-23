@@ -1,6 +1,6 @@
 var http = require('http');
 var url = require("url");
-var fs = require('fs');
+fs = require('fs');
 var router=require('./router');
 if(process.env.PORT==undefined){
 	process.env.PORT=80;
@@ -8,10 +8,21 @@ if(process.env.PORT==undefined){
 function out(name){
 	var data="";
 	try{
-		var data = fs.readFileSync(name);
+		data = fs.readFileSync(name);
 	}catch(err){
 		name="view/404.html";
 		data=out(name);
+	}
+	return data;
+}
+function act(actname){
+	var data="";
+	actname="view/"+actname+".html";
+	try{
+		data = fs.readFileSync(actname);
+	}catch(err){
+		actname="view/404.html";
+		data=out(actname);
 	}
 	return data;
 }
@@ -26,6 +37,11 @@ http.createServer(function (req, res) {
 	var argsstr = url.parse(req.url).query;
 	name='';
 	router.rout(pathname,function(){
+			res.writeHead(header.code,header.text);
+			res.write(act(name));
+			//console.log(pathname.split('/')+argsstr);
+			res.end();
+	},function(){
 			var acts=pathname.split('/');
 	  		var act=pathname.split('/')[1];
 	  		var file="";
@@ -75,11 +91,12 @@ http.createServer(function (req, res) {
 					};
 			  		name="view/404.html";
 			}
-	  		console.log(file);
+			res.writeHead(header.code,header.text);
+			res.write(out(name));
+			console.log(pathname.split('/')+argsstr);
+			res.end();
+			console.log(file);
 	});
 	console.log("name:"+name);
-	res.writeHead(header.code,header.text);
-	res.write(out(name));
-	console.log(pathname.split('/')+argsstr);
-	res.end();
+
 }).listen(process.env.PORT || 1337, null);
