@@ -1,6 +1,7 @@
 var http = require('http');
 var url = require("url");
 var fs = require('fs');
+var router=require('./router');
 if(process.env.PORT==undefined){
 	process.env.PORT=80;
 }
@@ -23,24 +24,9 @@ http.createServer(function (req, res) {
 	var get=req.url;
 	var pathname = url.parse(req.url).pathname;
 	var argsstr = url.parse(req.url).query;
-	var name='';
-	switch(pathname){
-		/* router begin u can code here*/
-		case '/':
-	  		name='view/index.html';
-	  		break;
-  		case '/index':
-	  		name='view/index.html';
-	  		break;
-	  	case '/about':
-	  		name='view/about.html';
-	  		break;
-	  	case '/blogs':
-	  		name='view/blogs.html';
-	  		break;
-	  	/* router end */
-	  	default:
-	  		var acts=pathname.split('/');
+	name='';
+	router.rout(pathname,function(){
+			var acts=pathname.split('/');
 	  		var act=pathname.split('/')[1];
 	  		var file="";
 	  		for(var i=2;i<acts.length;i++){
@@ -90,20 +76,8 @@ http.createServer(function (req, res) {
 			  		name="view/404.html";
 			}
 	  		console.log(file);
-	  		
-	  		//var data = fs.readFileSync(get);
-	  		//res.write("data:"+data);
-	  		/*
-	  		fs.readFile("README.md",function(err, data){
-			  if(err){
-			  	console.log('err:'+get)
-			  }else{ 
-			    res.write("data:"+data.toString());
-			    console.log(data.toString());
-			  }
-			});
-			*/
-	}
+	});
+	console.log("name:"+name);
 	res.writeHead(header.code,header.text);
 	res.write(out(name));
 	console.log(pathname.split('/')+argsstr);
