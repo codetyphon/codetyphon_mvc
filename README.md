@@ -13,9 +13,12 @@
     * 热部署控制器
     * 热部署模板文件
 * 可控制度高
+
 ##联系方式
+
 * [http://twitter.com/codetyphon](http://twitter.com/codetyphon) 
 * [http://weibo.com/codetyphon](http://weibo.com/codetyphon)
+
 ##其他项目
 
 * [haskellchina](http://www.haskellchina.com/) 
