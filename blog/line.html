@@ -1,0 +1,58 @@
+
+<html><head>
+    <title>wbline</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="shortcut icon" type="image/ico" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/main.min.css">
+  </head>
+  <body>
+    
+
+    <h1><a href="/">www.codetyphon.com</a></h1>
+
+    <p class="nav">
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+      <a href="/demo">demos</a>
+    </p> 
+    <div class="item">
+    
+      <h2>wbline</h2>
+      
+  <p>
+
+ 
+<div id="b"></div>
+<script src=/js/wbline.js></script>
+<script>
+window.onload=function(){
+	wbline.init("b",300).setRunEnd(function(){
+		c.clearRect(0, 0,c_w,c_h);
+		wbline.points=new Array();
+		for (var i = 99; i >= 0; i--) {
+			var r=Math.floor(Math.random()*255);
+			var g=Math.floor(Math.random()*255);
+			var b=Math.floor(Math.random()*255);
+			
+			wbline.points.push([Math.floor(Math.random()*c_w),Math.floor(Math.random()*c_h),r,g,b]);
+		};
+		wbline.pointIndex=0;
+		wbline.run();
+	}).setFps(2).run();
+}
+</script>
+ </p>
+  
+
+
+
+
+      <p class="pub">2015-01-20</p>
+      </div>
+
+    <div class="footer">
+      <p class="footercopyright">© 2000-2015 <a href="/">www.codetyphon.com</a>
+      </p> 
+   </div> 
+</body></html>
