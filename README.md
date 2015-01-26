@@ -28,7 +28,6 @@
 * [bigbigwork](http://www.bigbigwork.com)
 
 ##关于作者
-
 ```javascript
   var about = {
     name  : "codetyphon",
