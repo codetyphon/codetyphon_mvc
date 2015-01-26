@@ -13,14 +13,9 @@
     * 热部署控制器
     * 热部署模板文件
 * 可控制度高
-
-##问题反馈
-
-* 邮件(dev.hubo#gmail.com, 把#换成@)
-* QQ: 287759234
-* weibo: [@草依山](http://weibo.com/ihubo)
-* twitter: [@ihubo](http://twitter.com/ihubo)
-
+##联系方式
+* [http://twitter.com/codetyphon](http://twitter.com/codetyphon) 
+* [http://weibo.com/codetyphon](http://weibo.com/codetyphon)
 ##其他项目
 
 * [haskellchina](http://www.haskellchina.com/) 
