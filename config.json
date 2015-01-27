@@ -1,0 +1,7 @@
+{
+	mongo_db_host:'localhost',
+	mongo_db_name:'names',
+	mongo_db_port:'27017',
+	mongo_db_user:'',
+	mongo_db_pass:''
+}
