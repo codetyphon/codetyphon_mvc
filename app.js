@@ -1,8 +1,123 @@
 var http = require('http');
 var url = require("url");
 fs = require('fs');
-if(process.env.PORT==undefined){
-	process.env.PORT=80;
+
+var mongodb = require('mongodb');
+var MongoClient = require('mongodb').MongoClient
+  , assert = require('assert');
+var config='';
+var db_url = '';
+//
+//重新载入配置文件
+function reload_config(){
+	try{
+		var config_str='config=';
+		config_str += fs.readFileSync('./config.json');
+		eval(config_str);
+		//配置数据库链接
+		db_url = 'mongodb://'+config.mongo_db_host+':'+config.mongo_db_port+'/'+config.mongo_db_name;
+		console.dir(config)
+	}catch(err){
+		console.log("load config error");
+	}
+}
+
+
+var insertDocuments = function(db, callback) {
+  // Get the documents collection
+  var collection = db.collection('documents');
+  // Insert some documents
+  collection.insert([
+    {a : 1}, {a : 2}, {a : 3}
+  ], function(err, result) {
+    assert.equal(err, null);
+    assert.equal(3, result.result.n);
+    assert.equal(3, result.ops.length);
+    console.log("Inserted 3 documents into the document collection");
+    callback(result);
+  });
+}
+//
+var updateDocument = function(db, callback) {
+  // Get the documents collection
+  var collection = db.collection('documents');
+  // Update document where a is 2, set b equal to 1
+  collection.update({ a : 2 }
+    , { $set: { b : 1 } }, function(err, result) {
+    assert.equal(err, null);
+    assert.equal(1, result.result.n);
+    console.log("Updated the document with the field a equal to 2");
+    callback(result);
+  });  
+}
+//
+var removeDocument = function(db, callback) {
+  // Get the documents collection
+  var collection = db.collection('documents');
+  // Insert some documents
+  collection.remove({ a : 3 }, function(err, result) {
+    assert.equal(err, null);
+    assert.equal(1, result.result.n);
+    console.log("Removed the document with the field a equal to 3");
+    callback(result);
+  });    
+}
+//
+
+
+
+var db_query=function(table,obj,callback,err_callback){
+	try{
+		MongoClient.connect(db_url, function(err, db) {
+		  //assert.equal(null, err);
+		  
+		  if(err===null){
+		  	
+		  	console.log("Connected correctly to server");
+			var collection = db.collection(table);
+			collection.find(obj).toArray(function(err, docs) {
+			   	callback(docs);
+			   	//console.dir(docs);
+			   	db.close();
+			}); 
+		  }else{
+			console.log(err);
+			//err_callback(err+"");
+			err_callback('数据库连接超时');
+		  }
+ 
+		});
+	}catch(err){
+		err_callback(err+"");
+	}
+}
+//mongoDB数据库操作方法结束
+var out_html=function(res,header,actname,viewname,argsstr){
+	var data="";
+	//得到html文件内容
+	data = getContext(viewname);
+	console.log("grgs: "+argsstr);
+	//
+	try{
+		//尝试使用控制器
+		var actiondata="";
+		var actionpath="act/"+actname+".js";
+		//得到控制器内容，以读取方式用于热部署
+		actiondata += fs.readFileSync(actionpath);
+		//console.log(actiondata);
+		eval(actiondata);//执行处理器
+	}catch(err){
+		console.log("action error");
+		res.writeHead(header.code,header.text);
+		res.write("action error");
+		res.end();
+	}
+	//渲染器
+	function render(){
+		res.writeHead(header.code,header.text);
+		res.write(data);
+		res.end();
+	}
 }
 //字符串替换
 String.prototype.setValue = function ( hash ) {
@@ -14,19 +129,6 @@ String.prototype.setValue = function ( hash ) {
     }
     return str;
 };
-//处理资源文件 css js png 等
-function out(name){
-	var data="";
-	try{
-		data = fs.readFileSync(name);
-	}catch(err){
-		name="view/404.html";
-		data=out(name);
-	}
-	console.log("request resname:"+name);
-	console.log("open file: "+name);
-	return data;
-}
 //获得资源文件 css js png 等
 function getRes(name){
 	var data="";
@@ -34,7 +136,7 @@ function getRes(name){
 		data = fs.readFileSync(name);
 	}catch(err){
 		name="view/404.html";
-		data=out(name);
+		data=getRes(name);
 	}
 	console.log("request resname:"+name);
 	console.log("open file: "+name);
@@ -55,27 +157,7 @@ function getContext(view){
 	console.log("open file: "+filepath);
 	return data;
 }
-//处理控制器
-function actexec(actname,viewname,argsstr){
-	var data="";
-	//得到html文件内容
-	data = getContext(viewname);
-	console.log("grgs: "+argsstr);
-	//
-	try{
-		//尝试使用控制器
-		var actiondata="";
-		var actionpath="act/"+actname+".js";
-		//得到控制器内容，以读取方式用于热部署
-		actiondata += fs.readFileSync(actionpath);
-		//console.log(actiondata);
-		eval(actiondata);//执行处理器
-	}catch(err){
-		console.log("action error");
-	}
-	//
-	return data;
-}
+
 http.createServer(function (req, res) {
 	var header={
 		"code":200,
@@ -84,14 +166,14 @@ http.createServer(function (req, res) {
 	var get=req.url;
 	var pathname = url.parse(req.url).pathname;
 	var argsstr = url.parse(req.url).query;
-	var actname='';
-	var viewname='';
+	var actname='';//控制器文件名
+	var viewname='';//模板文件名
 	//
 
 	var acts=pathname.split('/');
 	//得到名称
 	var act=pathname.split('/')[1];
-	var resfile="";
+	var resfile="";//资源文件
 	for(var i=2;i<acts.length;i++){
 	  	//console.log(acts[i]);
 	  	resfile+="/"+acts[i];
@@ -99,28 +181,25 @@ http.createServer(function (req, res) {
 	//优先处理资源请求
 	switch(act){
 	  	case 'img':
-	  		resfile="img"+resfile;
+	  		resfile="res/img"+resfile;
 	  		header={
 				"code":200,
 				"text":{'Content-Type': 'image/x-png;charset=utf-8'}
 			};
-			name="res/"+resfile;
 	  		break;
 	  	case 'css':
-	  		resfile="css"+resfile;
+	  		resfile="res/css"+resfile;
 	  		header={
 				"code":200,
 				"text":{'Content-Type': 'text/css;charset=utf-8'}
 			};
-	  		name="res/"+resfile;
 	  		break;
 	  	case 'js':
-	  		resfile="js"+resfile;
+	  		resfile="res/js"+resfile;
 	  		header={
 				"code":200,
 				"text":{'Content-Type': 'text/javascript;charset=utf-8'}
 			};
-	  		name="res/"+resfile;
 	  		break;
 	  	case 'blog':
 	  		resfile="blog"+resfile;
@@ -128,7 +207,6 @@ http.createServer(function (req, res) {
 				"code":200,
 				"text":{'Content-Type': 'text/html;charset=utf-8'}
 			};
-	  		name=resfile;
 	  		break;
 	  	default:
 	  		//处理控制器
@@ -143,6 +221,11 @@ http.createServer(function (req, res) {
 					}
 				}
 			}catch(err){
+				//路由文件错误
+				res.writeHead(header.code,header.text);
+				res.write("router error");
+				res.end();
+				//
 			}
 	  		//如果不在路由之中：
 	  		header={
@@ -151,13 +234,16 @@ http.createServer(function (req, res) {
 			};
 	}
 	//
-	res.writeHead(header.code,header.text);
-	
+	reload_config();
 	if(viewname===''){
-		res.write(getRes(name));
+		//输出资源
+		res.writeHead(header.code,header.text);
+		res.write(getRes(resfile));
+		res.end();
 	}else{
-		res.write(actexec(actname,viewname,argsstr));
+		//输出页面
+		out_html(res,header,actname,viewname,argsstr);
 	}
 	//console.log(pathname.split('/')+argsstr);
-	res.end();
-}).listen(process.env.PORT || 1337, null);
+	
+}).listen(process.env.PORT || 80, null);
