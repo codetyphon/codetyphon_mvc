@@ -1,0 +1,19 @@
+{
+  "name": "codetyphon",
+  "version": "1.0.0",
+  "description": "a small MVC framework for nodeJS",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/codetyphon/codetyphon.git"
+  },
+  "dependencies": {
+    "mongodb": "~2.0"
+  },
+  "author": "Christian Kvalheim",
+  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/codetyphon/codetyphon/issues"
+  },
+  "homepage": "https://github.com/codetyphon/codetyphon"
+}
