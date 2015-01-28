@@ -22,49 +22,53 @@ function reload_config(){
 	}
 }
 
-/*
-var insertDocuments = function(db, callback) {
-  // Get the documents collection
-  var collection = db.collection('documents');
-  // Insert some documents
-  collection.insert([
-    {a : 1}, {a : 2}, {a : 3}
-  ], function(err, result) {
-    assert.equal(err, null);
-    assert.equal(3, result.result.n);
-    assert.equal(3, result.ops.length);
-    console.log("Inserted 3 documents into the document collection");
-    callback(result);
-  });
+/* 插入数据 */
+var db_insert=function(table,obj,callback,err_callback){
+	try{
+		MongoClient.connect(db_url, function(err, db) {
+		  //assert.equal(null, err);
+		  if(err===null){
+		  	console.log("Connected correctly to server");
+			var collection = db.collection(table);
+			//
+			collection.insert(obj, function(err, docs) {
+			  	if(err===null){
+					try{
+						callback(docs);
+						db.close();
+					}catch(e){
+						try{
+							err_callback(e+'');	
+						}catch(e){
+							console.log('error on error_callback');
+						}
+					}
+				}else{
+					//
+					try{
+						err_callback(err+'');	
+					}catch(e){
+						console.log('error on error_callback');
+					}
+					//
+				}
+			});
+			//
+		  }else{
+			console.log(err);
+			//err_callback(err+"");
+				try{
+					err_callback('数据库连接超时');	
+				}catch(e){
+					console.log('error on error_callback');
+				}
+		  }
+ 		  
+		});
+	}catch(err){
+		err_callback(err+"");
+	}
 }
-//
-var updateDocument = function(db, callback) {
-  // Get the documents collection
-  var collection = db.collection('documents');
-  // Update document where a is 2, set b equal to 1
-  collection.update({ a : 2 }
-    , { $set: { b : 1 } }, function(err, result) {
-    assert.equal(err, null);
-    assert.equal(1, result.result.n);
-    console.log("Updated the document with the field a equal to 2");
-    callback(result);
-  });  
-}
-//
-var removeDocument = function(db, callback) {
-  // Get the documents collection
-  var collection = db.collection('documents');
-  // Insert some documents
-  collection.remove({ a : 3 }, function(err, result) {
-    assert.equal(err, null);
-    assert.equal(1, result.result.n);
-    console.log("Removed the document with the field a equal to 3");
-    callback(result);
-  });    
-}
-//
-*/
-
 /* 查询数据 */
 var db_query=function(table,obj,callback,err_callback){
 	try{
@@ -111,26 +115,45 @@ var db_query=function(table,obj,callback,err_callback){
 	}
 }
 /* 更新数据 */
-var db_updata=function(table,obj,newObj,callback,err_callback){
+var db_update=function(table,obj,newObj,callback,err_callback){
+	console.log("执行数据库更新程序");
 	try{
 		MongoClient.connect(db_url, function(err, db) {
 		  //assert.equal(null, err);
-		  
 		  if(err===null){
 		  	
-		  	console.log("Connected correctly to server");
+		  	console.log("10 数据库连接正常");
 			var collection = db.collection(table);
-			collection.find(obj).toArray(function(err, docs) {
-			   		try{
+			//
+			collection.update(obj,{ $set:newObj }, function(err, docs) {
+				if(err===null){
+					console.log("20 数据更新正常");
+					try{
 						callback(docs);
+						db.close();
 					}catch(e){
-						err_callback(e+'');
+						console.log("30 数据更新异常");
+						try{
+							console.log("40 返回注入错误函数异常");
+							err_callback(e+'');	
+						}catch(e){
+							console.log('error on error_callback');
+						}
 					}
-			   	//console.dir(docs);
-			   	
-			}); 
+				}else{
+					//
+					console.log("20 数据更新异常");
+					try{
+						err_callback(err+'');	
+					}catch(e){
+						console.log('error on error_callback');
+					}
+					//
+				}
+			});  
+			//
 		  }else{
-			console.log(err);
+			console.log("10 数据库连接异常");
 			//err_callback(err+"");
 			err_callback('数据库连接超时');
 		  }
@@ -150,9 +173,27 @@ var db_remove=function(table,obj,callback,err_callback){
 		  	console.log("Connected correctly to server");
 			var collection = db.collection(table);
 			collection.remove(obj,function(err, docs) {
-			   	callback(docs);
-			   	console.dir('已经删除');
-			   	db.close();
+				if(err===null){
+					console.log('已经删除');
+					try{
+						callback(docs);
+						db.close();
+					}catch(e){
+						try{
+							err_callback(e+'');	
+						}catch(e){
+							console.log('error on error_callback');
+						}
+					}
+				}else{
+					//
+					try{
+						err_callback(err+'');	
+					}catch(e){
+						console.log('error on error_callback');
+					}
+					//
+				}
 			}); 
 		  }else{
 			console.log(err);
@@ -173,6 +214,7 @@ var out_html=function(res,header,actname,viewname,argsstr){
 	//
 	try{
 		//尝试使用控制器
+		console.log("执行控制器");
 		var actiondata="";
 		var actionpath="act/"+actname+".js";
 		//得到控制器内容，以读取方式用于热部署
@@ -180,9 +222,9 @@ var out_html=function(res,header,actname,viewname,argsstr){
 		//console.log(actiondata);
 		eval(actiondata);//执行处理器
 	}catch(err){
-		console.log("action error");
+		console.log("控制器异常："+err);
 		res.writeHead(header.code,header.text);
-		res.write("action error");
+		res.write("控制器错误");
 		res.end();
 	}
 	//渲染器
