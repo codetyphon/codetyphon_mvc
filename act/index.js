@@ -1,14 +1,18 @@
-db_query("names",{tel:'54321'},function(d){
-	//
+db_query("names",{name:'tom'},function(d){
+	var list='';
+	for(i=0;i<d.length;i++){
+		list+='<li>';
+		list+=d[i].name;
+		list+='</li>';
+	}
+	console.log(1<d.length);
 	data=data.setValue({
 		'{title}':d[0].name,
 		'{time}':'2015-01-25',
-		'{site}':'codetyphon'
+		'{site}':'codetyphon',
+		'{list}':list
 	});
-	
-	console.log("d:"+d[0].name);
 	render();
-	//
 },function(err){
 	data=err;
 	render();
