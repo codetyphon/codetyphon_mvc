@@ -22,7 +22,7 @@ function reload_config(){
 	}
 }
 
-
+/*
 var insertDocuments = function(db, callback) {
   // Get the documents collection
   var collection = db.collection('documents');
@@ -63,10 +63,55 @@ var removeDocument = function(db, callback) {
   });    
 }
 //
+*/
 
-
-
+/* 查询数据 */
 var db_query=function(table,obj,callback,err_callback){
+	try{
+		MongoClient.connect(db_url, function(err, db) {
+		  //assert.equal(null, err);
+		  if(err===null){
+		  	console.log("Connected correctly to server");
+			var collection = db.collection(table);
+			collection.find(obj).toArray(function(err, docs) {
+				if(err===null){
+					try{
+						callback(docs);
+						db.close();
+					}catch(e){
+						try{
+							err_callback(e+'');	
+						}catch(e){
+							console.log('error on error_callback');
+						}
+					}
+				}else{
+					//
+					try{
+						err_callback(err+'');	
+					}catch(e){
+						console.log('error on error_callback');
+					}
+					//
+				}
+			}); 
+		  }else{
+			console.log(err);
+			//err_callback(err+"");
+				try{
+					err_callback('数据库连接超时');	
+				}catch(e){
+					console.log('error on error_callback');
+				}
+		  }
+ 		  
+		});
+	}catch(err){
+		err_callback(err+"");
+	}
+}
+/* 更新数据 */
+var db_updata=function(table,obj,newObj,callback,err_callback){
 	try{
 		MongoClient.connect(db_url, function(err, db) {
 		  //assert.equal(null, err);
@@ -76,8 +121,37 @@ var db_query=function(table,obj,callback,err_callback){
 		  	console.log("Connected correctly to server");
 			var collection = db.collection(table);
 			collection.find(obj).toArray(function(err, docs) {
-			   	callback(docs);
+			   		try{
+						callback(docs);
+					}catch(e){
+						err_callback(e+'');
+					}
 			   	//console.dir(docs);
+			   	
+			}); 
+		  }else{
+			console.log(err);
+			//err_callback(err+"");
+			err_callback('数据库连接超时');
+		  }
+		  db.close();
+ 
+		});
+	}catch(err){
+		err_callback(err+"");
+	}
+}
+/* 删除数据 */
+var db_remove=function(table,obj,callback,err_callback){
+	try{
+		MongoClient.connect(db_url, function(err, db) {
+		  //assert.equal(null, err);
+		  if(err===null){
+		  	console.log("Connected correctly to server");
+			var collection = db.collection(table);
+			collection.remove(obj,function(err, docs) {
+			   	callback(docs);
+			   	console.dir('已经删除');
 			   	db.close();
 			}); 
 		  }else{
@@ -85,7 +159,6 @@ var db_query=function(table,obj,callback,err_callback){
 			//err_callback(err+"");
 			err_callback('数据库连接超时');
 		  }
- 
 		});
 	}catch(err){
 		err_callback(err+"");
