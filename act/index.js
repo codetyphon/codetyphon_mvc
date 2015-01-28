@@ -1,3 +1,24 @@
+/*
+db_insert("names",{name:'wb'},function(d){
+	console.dir(d);
+},function(err){
+	data=err;
+});
+*/
+
+db_update("names",{name:'wb'},{name:'g'},function(d){
+	console.dir(d);
+},function(err){
+	//data=err;
+});
+/*
+db_remove("names",{name:'wb'},function(d){
+	console.dir(d);
+},function(err){
+	data=err;
+});
+*/
+/*
 db_query("names",{name:'tom'},function(d){
 	var list='';
 	for(i=0;i<d.length;i++){
@@ -7,7 +28,27 @@ db_query("names",{name:'tom'},function(d){
 	}
 	console.log(1<d.length);
 	data=data.setValue({
-		'{title}':d[0].name,
+		'{title}':'title',
+		'{time}':'2015-01-25',
+		'{site}':'codetyphon',
+		'{list}':list
+	});
+	render();
+},function(err){
+	data=err;
+	render();
+});
+*/
+db_query("names",{},function(d){
+	var list='';
+	for(i=0;i<d.length;i++){
+		list+='<li>';
+		list+=d[i].name;
+		list+='</li>';
+	}
+	console.log(1<d.length);
+	data=data.setValue({
+		'{title}':'title',
 		'{time}':'2015-01-25',
 		'{site}':'codetyphon',
 		'{list}':list
