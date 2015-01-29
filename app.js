@@ -157,7 +157,7 @@ var db_update=function(table,obj,newObj,callback,err_callback){
 			//err_callback(err+"");
 			err_callback('数据库连接超时');
 		  }
-		  db.close();
+		  //db.close();
  
 		});
 	}catch(err){
